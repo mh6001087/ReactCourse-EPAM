@@ -1,8 +1,3 @@
-import './App.css';
-import Header from './components/Header/Header';
-import Courses from '../src/components/Courses/Courses';
-import CreateCourse from './components/CreateCourse/CreateCourse';
-import { useState } from 'react';
 export const mockedCoursesList = [
 	{
 		id: 'de5aaa59-90f5-4dbc-b8a9-aaf205c551ba',
@@ -33,6 +28,7 @@ export const mockedCoursesList = [
 		],
 	},
 ];
+
 export const mockedAuthorsList = [
 	{
 		id: '27cc3006-e93a-4748-8ca8-73d06aa93b6d',
@@ -51,28 +47,3 @@ export const mockedAuthorsList = [
 		name: 'Valentina Larina',
 	},
 ];
-function App() {
-	const [course, setCourse] = useState();
-
-	const RenderCourse = (flag) => {
-		console.log(flag);
-		if (course) {
-			return <CreateCourse />;
-		}
-		return (
-			<Courses
-				courseList={mockedCoursesList}
-				authorList={mockedAuthorsList}
-				setCourse={setCourse}
-			/>
-		);
-	};
-	return (
-		<>
-			<Header />
-			{RenderCourse()}
-		</>
-	);
-}
-
-export default App;

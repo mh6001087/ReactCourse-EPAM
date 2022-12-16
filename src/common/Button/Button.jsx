@@ -1,9 +1,11 @@
-const Button = (props) => {
-	const handleClick = () => {
-		console.log(props.text);
-	};
+import React from 'react';
 
-	return <button onClick={handleClick}>{props.text}</button>;
+const Button = (props) => {
+	return (
+		<button style={props.style} onClick={props.onClick}>
+			{props.buttonText}
+		</button>
+	);
 };
 
 export default Button;
