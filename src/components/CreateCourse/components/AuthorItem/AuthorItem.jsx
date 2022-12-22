@@ -1,11 +1,15 @@
 import React from 'react';
 import Button from '../../../../common/Button/Button';
 
-const AuthorItem = ({ authorName }) => {
+const AuthorItem = ({ author, btnName, handleMyClick }) => {
 	return (
 		<>
-			<p>{authorName}</p>
-			<Button buttonText='Add author'></Button>
+			<p>{author.name}</p>
+			<Button
+				buttonText={btnName}
+				handleMyClick={handleMyClick}
+				author={author}
+			></Button>
 		</>
 	);
 };

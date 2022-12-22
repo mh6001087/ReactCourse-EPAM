@@ -33,22 +33,17 @@ const CourseCard = ({ course, authorList }) => {
 			.join(', ');
 	};
 
-	// const getAuthors = () => {
-	// return authors
-	// 	.forEach((a) => {
-	// 		authorList.push( authorList.includes((e) => e.id === a).name);
-	// 	})
-	// 	.join(', ');
-	// };
 	const toHoursAndMinutes = (totalMinutes) => {
 		const minutes = totalMinutes % 60;
 		const hours = Math.floor(totalMinutes / 60);
 
 		return `${padTo2Digits(hours)}:${padTo2Digits(minutes)}`;
 	};
+
 	const padTo2Digits = (num) => {
 		return num.toString().padStart(2, '0');
 	};
+
 	return (
 		<div style={courseCardStyle}>
 			<div style={divCard}>

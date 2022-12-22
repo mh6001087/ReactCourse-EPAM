@@ -52,25 +52,20 @@ export const mockedAuthorsList = [
 	},
 ];
 function App() {
-	const [course, setCourse] = useState();
+	const [course, setCourse] = useState(false);
 
-	const RenderCourse = (flag) => {
-		console.log(flag);
-		if (course) {
-			return <CreateCourse />;
-		}
-		return (
-			<Courses
-				courseList={mockedCoursesList}
-				authorList={mockedAuthorsList}
-				setCourse={setCourse}
-			/>
-		);
-	};
 	return (
 		<>
 			<Header />
-			{RenderCourse()}
+			{course ? (
+				<CreateCourse authorList={mockedAuthorsList} />
+			) : (
+				<Courses
+					courseList={mockedCoursesList}
+					authorList={mockedAuthorsList}
+					setCourse={setCourse}
+				/>
+			)}
 		</>
 	);
 }

@@ -3,14 +3,12 @@ import Button from '../../common/Button/Button';
 import CourseCard from '../Courses/components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
 
-const Courses = ({ courseList, authorList, onChange, setCourse }) => {
+const Courses = ({ courseList, authorList, setCourse }) => {
 	//here is where we keep search result
 	const [result, setResult] = useState(courseList);
-
+	console.log(setCourse);
 	//here we filter the list where the title(or any element of data) is equal to input value
 	const searchChange = (e) => {
-		console.log(e);
-		console.log(result);
 		const searchResult = courseList.filter(
 			(element) =>
 				element.title.toLowerCase().includes(e.toLowerCase()) ||
@@ -23,7 +21,7 @@ const Courses = ({ courseList, authorList, onChange, setCourse }) => {
 		<>
 			<SearchBar onChange={searchChange} />
 			<Button
-				onClick={() => setCourse(true)}
+				handleMyClick={() => setCourse(true)}
 				buttonText='Add new course'
 				style={{ padding: '10px 24px', marginLeft: '10px' }}
 			/>
