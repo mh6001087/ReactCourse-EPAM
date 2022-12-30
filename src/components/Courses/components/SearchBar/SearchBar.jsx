@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../../../../common/Button/Button';
 import Input from '../../../../common/Input/Input';
+import ProtoTypes from 'prop-types';
 
 const SearchBar = ({ onChange }) => {
 	const [inputSearch, setInputSearch] = useState('');
@@ -16,6 +17,7 @@ const SearchBar = ({ onChange }) => {
 	return (
 		<div style={{ display: 'flex', gap: '1rem' }}>
 			<Input
+				type='text'
 				placeholder={'Enter course name or id'}
 				onChange={(e) => onInputChange(e.target.value)}
 				value={inputSearch}
@@ -28,5 +30,7 @@ const SearchBar = ({ onChange }) => {
 		</div>
 	);
 };
-
+SearchBar.propTypes = {
+	onChange: ProtoTypes.func.isRequired,
+};
 export default SearchBar;

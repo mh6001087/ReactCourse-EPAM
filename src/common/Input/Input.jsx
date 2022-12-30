@@ -19,8 +19,8 @@ const Input = (props) => {
 	return (
 		<div style={searchCard}>
 			<input
-				type='text'
-				id='fname'
+				type={props.type}
+				id={props.id}
 				name='fname'
 				placeholder={props.placeholder}
 				onChange={props.onChange}
