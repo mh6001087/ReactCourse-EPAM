@@ -1,6 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../../../common/Button/Button';
-
+import ProtoTypes from 'prop-types';
 const CourseCard = ({ course, authorList }) => {
 	// style
 	const courseCardStyle = {
@@ -15,7 +16,9 @@ const CourseCard = ({ course, authorList }) => {
 	};
 	const divCard = { float: 'left', width: '50%', marginRight: '80px' };
 
+	const navigate = useNavigate();
 	const {
+		id,
 		title,
 		duration,
 		description,
@@ -64,11 +67,17 @@ const CourseCard = ({ course, authorList }) => {
 				<Button
 					type='button'
 					buttonText='Show course'
+					onClick={() => navigate(`/courses/${id}`)}
 					style={{ padding: '10px 24px', marginLeft: '10px' }}
 				/>
 			</div>
 		</div>
 	);
+};
+
+CourseCard.propTypes = {
+	course: ProtoTypes.object.isRequired,
+	authorList: ProtoTypes.array.isRequired,
 };
 
 export default CourseCard;

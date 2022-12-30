@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
+import { mockedAuthorsList } from '../../constants';
 import AuthorItem from './components/AuthorItem/AuthorItem';
 
-const CreateCourse = ({ authorList }) => {
+const CreateCourse = () => {
 	const onCoursesCreate = (key) => {};
 	const [courseAuthorList, setcourseAuthorList] = useState([]);
-	const [authorsList, setAuthorList] = useState(authorList);
+	const [authorsList, setAuthorList] = useState(mockedAuthorsList);
 	const [authorName, setauthorName] = useState('');
 	const [duration, setduration] = useState('');
 
@@ -62,7 +63,7 @@ const CreateCourse = ({ authorList }) => {
 			>
 				<article style={{ width: '500px;' }}>
 					<label>Title</label>
-					<Input placeholder={'Enter title...'} />
+					<Input placeholder={'Enter title...'} type='text' />
 					<label>Description</label>
 					<textarea
 						rows='4'
@@ -74,12 +75,13 @@ const CreateCourse = ({ authorList }) => {
 					<label>Author name</label>
 					<Input
 						placeholder={'Enter author name...'}
+						type='text'
 						onChange={onChange}
 						value={authorName}
 					/>
 					<Button
 						buttonText={'Creat author'}
-						handleMyClick={createAuthor}
+						onClick={createAuthor}
 						style={{ padding: '3px 10px', marginLeft: '10px' }}
 					/>
 					<h2>Duration</h2>
@@ -87,6 +89,7 @@ const CreateCourse = ({ authorList }) => {
 					<Input
 						placeholder={'Enter duration in minutes...'}
 						onChange={setDuration}
+						type='text'
 					/>
 					<h3>Duration: {toHoursAndMinutes()}</h3>
 					<Button
@@ -111,7 +114,7 @@ const CreateCourse = ({ authorList }) => {
 							key={author.id}
 							author={author}
 							btnName={'Delete author'}
-							handleMyClick={() => handleDelete(author)}
+							onClick={() => handleDelete(author)}
 						/>
 					))}
 			</aside>
@@ -130,7 +133,7 @@ const CreateCourse = ({ authorList }) => {
 							key={author.id}
 							author={author}
 							btnName={'Add author'}
-							handleMyClick={() => handleClick(author)}
+							onClick={() => handleClick(author)}
 						/>
 					))}
 			</aside>
