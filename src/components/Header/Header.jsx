@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Logo from './components/Logo/Logo';
 import Button from '../../common/Button/Button';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Header = () => {
-	const onClick = () => {
-		const token = JSON.parse(localStorage.getItem('token'));
-		const userName = JSON.parse(localStorage.getItem('userName'));
-		if (token && userName) {
-			setIsLoggedIn(false);
-			localStorage.removeItem('userName');
-			setuserName('');
-			localStorage.removeItem('token');
-		}
-	};
 	const uIStyle = {
 		listStyleType: 'none',
 		margin: '0',
@@ -38,6 +29,34 @@ const Header = () => {
 	const lILeftStyle = { float: 'left', display: 'block' };
 	const [userName, setuserName] = useState('');
 	const [isLoggedIn, setIsLoggedIn] = useState('');
+	const [changedHeader, setchangedHeader] = useState('');
+	const location = useLocation();
+	const navigate = useNavigate();
+
+	const onClick = () => {
+		const token = JSON.parse(localStorage.getItem('token'));
+		const userName = JSON.parse(localStorage.getItem('userName'));
+		if (token && userName) {
+			setIsLoggedIn(false);
+			localStorage.removeItem('userName');
+			setuserName('');
+			localStorage.removeItem('token');
+		}
+		navigate(`/login`);
+	};
+
+	useEffect(() => {
+		console.log(`00`, location.pathname);
+		if (
+			location.pathname === '/login' ||
+			location.pathname === '/registration'
+		) {
+			setchangedHeader(false);
+		} else {
+			setchangedHeader(true);
+		}
+		// Send request to your server to increment page view count
+	}, [location]);
 
 	useEffect(() => {
 		const userName = JSON.parse(localStorage.getItem('userName'));
@@ -59,7 +78,7 @@ const Header = () => {
 					<Logo />
 				</li>
 				<li style={lIRightStyle}>
-					{isLoggedIn ? (
+					{changedHeader ? (
 						<Button
 							type='button'
 							buttonText='Logout'
@@ -71,7 +90,7 @@ const Header = () => {
 					)}
 				</li>
 				<li style={nameStyle}>
-					<p style={anchorStyle}>{userName}</p>
+					{changedHeader ? <p style={anchorStyle}>{userName}</p> : <p></p>}
 				</li>
 			</ul>
 		</div>

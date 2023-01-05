@@ -24,7 +24,7 @@ const Courses = () => {
 		<>
 			<SearchBar onChange={searchChange} />
 			<Button
-				onClick={() => navigate('/add')}
+				onClick={() => navigate('/courses/add')}
 				buttonText='Add new course'
 				style={{ padding: '10px 24px', marginLeft: '10px' }}
 			/>

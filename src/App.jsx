@@ -10,14 +10,13 @@ import CourseInfo from './components/CourseInfo/CourseInfo';
 function App() {
 	return (
 		<>
-			<Header />
-
 			<BrowserRouter>
+				<Header />
 				<Routes>
 					<Route path='/' element={<Courses />} />
 					<Route path='courses' element={<Courses />} />
 					<Route path='courses/:courseId' element={<CourseInfo />} />
-					<Route path='add' element={<CreateCourse />} />
+					<Route path='courses/add' element={<CreateCourse />} />
 					<Route path='registration' element={<Registration />} />
 					<Route path='login' element={<Login />} />
 					<Route path='*' element={<Navigate to='/courses' />} />
