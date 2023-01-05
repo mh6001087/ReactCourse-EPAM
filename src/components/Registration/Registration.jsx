@@ -23,7 +23,8 @@ const Registration = () => {
 			setPassword(value);
 		}
 	};
-	const createUser = async () => {
+	const createUser = async (e) => {
+		e.preventDefault();
 		const newUser = {
 			name: name,
 			password: password,

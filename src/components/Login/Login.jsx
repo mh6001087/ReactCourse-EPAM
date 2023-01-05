@@ -19,7 +19,8 @@ const Login = () => {
 		}
 	};
 
-	const login = async () => {
+	const login = async (e) => {
+		e.preventDefault();
 		const user = {
 			email: email,
 			password: password,
