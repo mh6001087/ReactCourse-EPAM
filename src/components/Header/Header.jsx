@@ -44,7 +44,6 @@ const Header = () => {
 		}
 		navigate(`/login`);
 	};
-
 	useEffect(() => {
 		console.log(`00`, location.pathname);
 		if (

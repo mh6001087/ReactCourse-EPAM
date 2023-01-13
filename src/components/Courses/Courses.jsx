@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../common/Button/Button';
 import { mockedAuthorsList, mockedCoursesList } from '../../constants';
+import { loadCourses } from '../../store/courses/actions';
+import { store } from '../../store/rootReducer';
 import CourseCard from '../Courses/components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
-
+import { connect } from 'react-redux';
 const Courses = () => {
+	const dispatch = useDispatch();
+	const { courses } = useSelector((state) => state.courses);
 	//here is where we keep search result
 	const [result, setResult] = useState(mockedCoursesList);
 	const navigate = useNavigate();
 	//here we filter the list where the title(or any element of data) is equal to input value
 	const searchChange = (e) => {
-		console.log(`e`, e);
 		const searchResult = mockedCoursesList.filter(
 			(element) =>
 				element.title.toLowerCase().includes(e.toLowerCase()) ||
@@ -20,6 +24,14 @@ const Courses = () => {
 		//here we set the filtered list to result
 		setResult(searchResult);
 	};
+
+	useEffect(() => {
+		dispatch(loadCourses());
+	}, [dispatch]);
+
+	store.subscribe(() => {
+		console.log(`From courses component`, store.getState());
+	});
 	return (
 		<>
 			<SearchBar onChange={searchChange} />
@@ -40,5 +52,4 @@ const Courses = () => {
 		</>
 	);
 };
-
 export default Courses;
