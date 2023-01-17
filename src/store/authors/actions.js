@@ -1,10 +1,15 @@
-import { ADD_AUTHOR, CHANGE_AUTHORS } from './types';
+import { FETCH_AUTHORS_DATA_ERROR, FETCH_AUTHORS_DATA_SUCCESS } from './types';
+import axios from 'axios';
 
-const addAuthor = (payload) => ({ type: ADD_AUTHOR, payload });
-
-export function loadAuthors(authors) {
-	return {
-		type: CHANGE_AUTHORS,
-		authors: authors,
+export const fetchAuthorsData = () => {
+	return (dispatch) => {
+		axios
+			.get('http://localhost:4000/authors/all')
+			.then((res) => {
+				dispatch({ type: FETCH_AUTHORS_DATA_SUCCESS, payload: res.data });
+			})
+			.catch((err) => {
+				dispatch({ type: FETCH_AUTHORS_DATA_ERROR, payload: err });
+			});
 	};
-}
+};

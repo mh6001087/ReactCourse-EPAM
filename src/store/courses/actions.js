@@ -1,12 +1,18 @@
-import { loadCoursesAsync } from '../../services';
-import { ADD_COURSE, LOAD_COURSES } from './types';
+import { FETCH_COURSES_DATA_ERROR, FETCH_COURSES_DATA_SUCCESS } from './types';
+import axios from 'axios';
 
-const addCourse = (payload) => ({ type: ADD_COURSE, payload });
-
-export function loadCourses() {
+export const fetchCoursesData = () => {
 	return (dispatch) => {
-		const courses = loadCoursesAsync(dispatch);
-		console.log('from load courses function', courses);
-		return dispatch({ type: LOAD_COURSES, courses: courses });
+		axios
+			.get('http://localhost:4000/courses/all')
+			.then((res) => {
+				dispatch({
+					type: FETCH_COURSES_DATA_SUCCESS,
+					payload: res.data.result,
+				});
+			})
+			.catch((err) => {
+				dispatch({ type: FETCH_COURSES_DATA_ERROR, payload: err });
+			});
 	};
-}
+};

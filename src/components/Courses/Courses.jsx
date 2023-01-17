@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../common/Button/Button';
 import { mockedAuthorsList, mockedCoursesList } from '../../constants';
-import { loadCourses } from '../../store/courses/actions';
+import { fetchCoursesData } from '../../store/courses/actions';
 import { store } from '../../store/rootReducer';
 import CourseCard from '../Courses/components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
-import { connect } from 'react-redux';
+import { fetchAuthorsData } from '../../store/authors/actions';
+
 const Courses = () => {
 	const dispatch = useDispatch();
 	const { courses } = useSelector((state) => state.courses);
@@ -26,12 +27,17 @@ const Courses = () => {
 	};
 
 	useEffect(() => {
-		dispatch(loadCourses());
+		dispatch(fetchAuthorsData());
+	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(fetchCoursesData());
 	}, [dispatch]);
 
 	store.subscribe(() => {
 		console.log(`From courses component`, store.getState());
 	});
+
 	return (
 		<>
 			<SearchBar onChange={searchChange} />

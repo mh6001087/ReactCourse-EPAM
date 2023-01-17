@@ -1,2 +1,3 @@
 export const ADD_COURSE = 'courses/ADD_COURSE';
-export const LOAD_COURSES = 'courses/LOAD_COURSES';
+export const FETCH_COURSES_DATA_SUCCESS = 'courses/FETCH_COURSES_DATA_SUCCESS';
+export const FETCH_COURSES_DATA_ERROR = 'courses/FETCH_COURSES_DATA_ERROR';

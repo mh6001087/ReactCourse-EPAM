@@ -2,11 +2,16 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
-
+import { loginAsync } from '../../store/user/actions';
+import { useDispatch } from 'react-redux';
+import { store } from '../../store/rootReducer';
 const Login = () => {
-	const url = 'http://localhost:4000/login';
+	// const url = 'http://localhost:4000/login';
+	const dispatch = useDispatch();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [token, setToken] = useState(null);
+	const [error, setError] = useState(null);
 	const navigate = useNavigate();
 
 	const handleInputChange = (e) => {
@@ -19,26 +24,34 @@ const Login = () => {
 		}
 	};
 
+	// const login = async (e) => {
+	// 	e.preventDefault();
+	// 	const user = {
+	// 		email: email,
+	// 		password: password,
+	// 	};
+	// 	const response = await fetch(url, {
+	// 		method: 'POST',
+	// 		body: JSON.stringify(user),
+	// 		headers: {
+	// 			'Content-Type': 'application/json',
+	// 		},
+	// 	});
+	// 	const result = await response.json();
+	// 	if (result.successful) {
+	// 		localStorage.setItem('token', JSON.stringify(result.result));
+	// 		localStorage.setItem('userName', JSON.stringify(result.user.name));
+	// 		navigate('/courses');
+	// 	}
+	// };
 	const login = async (e) => {
 		e.preventDefault();
-		const user = {
-			email: email,
-			password: password,
-		};
-		const response = await fetch(url, {
-			method: 'POST',
-			body: JSON.stringify(user),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-		const result = await response.json();
-		if (result.successful) {
-			localStorage.setItem('token', JSON.stringify(result.result));
-			localStorage.setItem('userName', JSON.stringify(result.user.name));
-			navigate('/courses');
-		}
+		dispatch(loginAsync(email, password));
+		navigate('/courses');
 	};
+	store.subscribe(() => {
+		// Retrieve data from store
+	});
 	return (
 		<form className='form'>
 			<div className='form-body'>
