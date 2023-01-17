@@ -45,7 +45,6 @@ const Header = () => {
 		navigate(`/login`);
 	};
 	useEffect(() => {
-		console.log(`00`, location.pathname);
 		if (
 			location.pathname === '/login' ||
 			location.pathname === '/registration'
@@ -64,12 +63,12 @@ const Header = () => {
 		}
 	}, []);
 
-	useEffect(() => {
-		const token = JSON.parse(localStorage.getItem('token'));
-		if (token) {
-			setIsLoggedIn(true);
-		}
-	}, []);
+	// useEffect(() => {
+	// 	const token = JSON.parse(localStorage.getItem('token'));
+	// 	if (token) {
+	// 		setIsLoggedIn(true);
+	// 	}
+	// }, []);
 	return (
 		<div style={{ border: 3, margin: '9px' }}>
 			<ul style={uIStyle}>

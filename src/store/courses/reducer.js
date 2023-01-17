@@ -1,20 +1,16 @@
-import { LOAD_COURSES } from './types';
+import { FETCH_COURSES_DATA_SUCCESS } from './types';
 
 let defaultState = {
 	courses: [],
 };
 
 const coursesReducer = (state = defaultState, action) => {
-	if (action.type === LOAD_COURSES) {
-		console.log('hello from course reducer', action);
-		return {
-			...state,
-			courses: action.courses,
-		};
-	} else {
-		return {
-			...state,
-		};
+	switch (action.type) {
+		case FETCH_COURSES_DATA_SUCCESS: {
+			return action.payload;
+		}
+		default:
+			return state;
 	}
 };
 
