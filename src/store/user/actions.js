@@ -14,7 +14,6 @@ export const loginAsync = (_email, password) => async (dispatch) => {
 		dispatch({ type: LOGIN_SUCCESS, payload: { token, name, email } });
 	} catch (err) {
 		// Handle the error
-		console.log(err);
 		dispatch({ type: LOGIN_ERROR, payload: err });
 	}
 };

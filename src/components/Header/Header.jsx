@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Logo from './components/Logo/Logo';
 import Button from '../../common/Button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useReducer } from 'react';
+import userReducer, { userIntialState } from '../../store/user/reducer';
+import { LOGOUT } from '../../store/user/types';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
 	const uIStyle = {
@@ -26,24 +30,33 @@ const Header = () => {
 	const nameStyle = {
 		float: 'right',
 	};
+
 	const lILeftStyle = { float: 'left', display: 'block' };
-	const [userName, setuserName] = useState('');
+	// const [userName, setuserName] = useState('');
 	const [isLoggedIn, setIsLoggedIn] = useState('');
 	const [changedHeader, setchangedHeader] = useState('');
 	const location = useLocation();
 	const navigate = useNavigate();
+	const [state, dispatch] = useReducer(userReducer, userIntialState);
+	// Previous function for logout button
+	// const onClick = () => {
+	// 	const token = JSON.parse(localStorage.getItem('token'));
+	// 	const userName = JSON.parse(localStorage.getItem('userName'));
+	// 	if (token && userName) {
+	// 		setIsLoggedIn(false);
+	// 		localStorage.removeItem('userName');
+	// 		setuserName('');
+	// 		localStorage.removeItem('token');
+	// 	}
+	// 	navigate(`/login`);
+	// };
+	const userName = useSelector((state) => state.user.name);
 
-	const onClick = () => {
-		const token = JSON.parse(localStorage.getItem('token'));
-		const userName = JSON.parse(localStorage.getItem('userName'));
-		if (token && userName) {
-			setIsLoggedIn(false);
-			localStorage.removeItem('userName');
-			setuserName('');
-			localStorage.removeItem('token');
-		}
+	const handleLogout = () => {
+		dispatch({ type: LOGOUT });
 		navigate(`/login`);
 	};
+
 	useEffect(() => {
 		if (
 			location.pathname === '/login' ||
@@ -56,19 +69,6 @@ const Header = () => {
 		// Send request to your server to increment page view count
 	}, [location]);
 
-	useEffect(() => {
-		const userName = JSON.parse(localStorage.getItem('userName'));
-		if (userName) {
-			setuserName(userName);
-		}
-	}, []);
-
-	// useEffect(() => {
-	// 	const token = JSON.parse(localStorage.getItem('token'));
-	// 	if (token) {
-	// 		setIsLoggedIn(true);
-	// 	}
-	// }, []);
 	return (
 		<div style={{ border: 3, margin: '9px' }}>
 			<ul style={uIStyle}>
@@ -80,7 +80,7 @@ const Header = () => {
 						<Button
 							type='button'
 							buttonText='Logout'
-							onClick={onClick}
+							onClick={handleLogout}
 							style={{ padding: '10px 24px', marginLeft: '10px' }}
 						/>
 					) : (

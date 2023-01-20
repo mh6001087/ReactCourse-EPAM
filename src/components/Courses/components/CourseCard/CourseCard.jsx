@@ -2,7 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../../common/Button/Button';
 import ProtoTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { DELETE_COURSE } from '../../../../store/courses/types';
 const CourseCard = ({ course, authorList }) => {
+	const dispatch = useDispatch();
+
 	// style
 	const courseCardStyle = {
 		border: '2px solid green',
@@ -17,6 +21,7 @@ const CourseCard = ({ course, authorList }) => {
 	const divCard = { float: 'left', width: '50%', marginRight: '80px' };
 
 	const navigate = useNavigate();
+
 	const {
 		id,
 		title,
@@ -27,13 +32,15 @@ const CourseCard = ({ course, authorList }) => {
 	} = course;
 
 	const getAuthorsById = (list) => {
-		return list
+		const result = list
 			?.map((id) =>
 				authorList
 					?.filter((author) => author.id === id)
 					?.map((author) => author.name)
 			)
 			.join(', ');
+		console.log(`result from get authors`, result);
+		return result;
 	};
 
 	const toHoursAndMinutes = (totalMinutes) => {
@@ -46,7 +53,9 @@ const CourseCard = ({ course, authorList }) => {
 	const padTo2Digits = (num) => {
 		return num.toString().padStart(2, '0');
 	};
-
+	const handleDelete = () => {
+		dispatch({ type: DELETE_COURSE, payload: course.id });
+	};
 	return (
 		<div style={courseCardStyle}>
 			<div style={divCard}>
@@ -70,6 +79,17 @@ const CourseCard = ({ course, authorList }) => {
 					onClick={() => navigate(`/courses/${id}`)}
 					style={{ padding: '10px 24px', marginLeft: '10px' }}
 				/>
+				<Button
+					type='button'
+					buttonText='Delete'
+					onClick={handleDelete}
+					style={{ padding: '10px 24px', marginLeft: '10px' }}
+				/>
+				<Button
+					type='button'
+					buttonText='Update'
+					style={{ padding: '10px 24px', marginLeft: '10px' }}
+				/>
 			</div>
 		</div>
 	);
@@ -77,7 +97,6 @@ const CourseCard = ({ course, authorList }) => {
 
 CourseCard.propTypes = {
 	course: ProtoTypes.object.isRequired,
-	authorList: ProtoTypes.array.isRequired,
 };
 
 export default CourseCard;

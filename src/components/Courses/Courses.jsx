@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../common/Button/Button';
-import { mockedAuthorsList, mockedCoursesList } from '../../constants';
 import { fetchCoursesData } from '../../store/courses/actions';
 import { store } from '../../store/rootReducer';
 import CourseCard from '../Courses/components/CourseCard/CourseCard';
@@ -11,33 +10,47 @@ import { fetchAuthorsData } from '../../store/authors/actions';
 
 const Courses = () => {
 	const dispatch = useDispatch();
-	const { courses } = useSelector((state) => state.courses);
-	//here is where we keep search result
-	const [result, setResult] = useState(mockedCoursesList);
+	const { authors } = useSelector((state) => state);
+	const courses = useSelector((state) => state.courses);
+	// const [filteredCourses, setFilteredCourses] = useState([]);
+	// const [filteredKeyword, setFilteredKeyword] = useState('');
 	const navigate = useNavigate();
-	//here we filter the list where the title(or any element of data) is equal to input value
-	const searchChange = (e) => {
-		const searchResult = mockedCoursesList.filter(
-			(element) =>
-				element.title.toLowerCase().includes(e.toLowerCase()) ||
-				element.id.toLowerCase().includes(e.toLowerCase())
-		);
-		//here we set the filtered list to result
-		setResult(searchResult);
-	};
-
 	useEffect(() => {
 		dispatch(fetchAuthorsData());
 	}, [dispatch]);
 
 	useEffect(() => {
-		dispatch(fetchCoursesData());
-	}, [dispatch]);
+		if (!courses) {
+			dispatch(fetchCoursesData());
+		}
+	}, [dispatch, courses]);
+	console.log(`courses`, courses);
+	// useEffect(() => {
+	// 	if (courses.length > 0) {
+	// 		const filteredData = courses?.filter((course) =>
+	// 			course.title.toLowerCase().includes(filteredKeyword)
+	// 		);
+	// 		setFilteredCourses(filteredData);
+	// 	}
+	// }, [courses, filteredKeyword]);
 
-	store.subscribe(() => {
-		console.log(`From courses component`, store.getState());
-	});
+	// const handleFilterChange = (e) => {
+	// 	setFilteredKeyword(e);
+	// };
+	//here we filter the list where the title(or any element of data) is equal to input value
+	const searchChange = (e) => {
+		return courses.filter(
+			(element) =>
+				element.title.toLowerCase().includes(e.toLowerCase()) ||
+				element.id.toLowerCase().includes(e.toLowerCase())
+		);
+		//here we set the filtered list to result
+		//setCourses(searchResult);
+	};
 
+	// store.subscribe(() => {
+	// 	console.log(`From courses component`, store.getState().courses);
+	// });
 	return (
 		<>
 			<SearchBar onChange={searchChange} />
@@ -46,13 +59,12 @@ const Courses = () => {
 				buttonText='Add new course'
 				style={{ padding: '10px 24px', marginLeft: '10px' }}
 			/>
-
-			{result?.length > 0 &&
-				result.map((course) => (
+			{courses.courses?.length > 0 &&
+				courses.courses.map((course) => (
 					<CourseCard
 						key={course.id}
 						course={course}
-						authorList={mockedAuthorsList}
+						authorList={authors.result}
 					/>
 				))}
 		</>
