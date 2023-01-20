@@ -1,14 +1,14 @@
 import { LOGIN_ERROR, LOGIN_SUCCESS, LOGOUT } from './types';
 
-const userIntialState = {
+export const userIntialState = {
 	isAuth: false,
 	name: '',
 	email: '',
 	error: null,
+	token: '',
 };
 
 const userReducer = (state = userIntialState, action) => {
-	console.log(`action.payload`, action);
 	switch (action.type) {
 		case LOGIN_SUCCESS:
 			localStorage.setItem('token', action.payload.token);
@@ -17,6 +17,7 @@ const userReducer = (state = userIntialState, action) => {
 				isAuth: true,
 				name: action.payload.name,
 				email: action.payload.email,
+				token: action.payload.token,
 			};
 
 		case LOGOUT:
@@ -26,6 +27,7 @@ const userReducer = (state = userIntialState, action) => {
 				isAuth: false,
 				name: '',
 				email: '',
+				token: '',
 			};
 		case LOGIN_ERROR:
 			return {

@@ -1,5 +1,5 @@
+import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { mockedCoursesList, mockedAuthorsList } from '../../constants';
 
 // style
 const courseCardStyle = {
@@ -16,8 +16,10 @@ const divCard = { float: 'left', width: '50%', marginRight: '80px' };
 
 const CourseInfo = () => {
 	let { courseId } = useParams();
-	const course = mockedCoursesList.find((e) => e.id === courseId);
-
+	const courses = useSelector((state) => state.courses.courses);
+	const course = courses.find((e) => e.id === courseId);
+	const authorsList = useSelector((state) => state);
+	console.log(`authorsList from info`, authorsList);
 	const {
 		id,
 		title,
@@ -29,7 +31,7 @@ const CourseInfo = () => {
 	const getAuthorsById = (list) => {
 		return list
 			?.map((id) =>
-				mockedAuthorsList
+				authorsList.result
 					?.filter((author) => author.id === id)
 					?.map((author) => author.name)
 			)
