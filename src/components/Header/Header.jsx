@@ -5,7 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useReducer } from 'react';
 import userReducer, { userIntialState } from '../../store/user/reducer';
 import { LOGOUT } from '../../store/user/types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutAsync } from '../../store/user/thunk';
 
 const Header = () => {
 	const uIStyle = {
@@ -37,7 +38,7 @@ const Header = () => {
 	const [changedHeader, setchangedHeader] = useState('');
 	const location = useLocation();
 	const navigate = useNavigate();
-	const [state, dispatch] = useReducer(userReducer, userIntialState);
+	// const [state, dispatch] = useReducer(userReducer, userIntialState);
 	// Previous function for logout button
 	// const onClick = () => {
 	// 	const token = JSON.parse(localStorage.getItem('token'));
@@ -51,9 +52,12 @@ const Header = () => {
 	// 	navigate(`/login`);
 	// };
 	const userName = useSelector((state) => state.user.name);
+	const dispatch = useDispatch();
 
-	const handleLogout = () => {
-		dispatch({ type: LOGOUT });
+	const handleLogout = (e) => {
+		e.preventDefault();
+		const tokenValue = localStorage.token;
+		dispatch(logoutAsync(tokenValue));
 		navigate(`/login`);
 	};
 
@@ -68,7 +72,6 @@ const Header = () => {
 		}
 		// Send request to your server to increment page view count
 	}, [location]);
-
 	return (
 		<div style={{ border: 3, margin: '9px' }}>
 			<ul style={uIStyle}>
@@ -88,7 +91,11 @@ const Header = () => {
 					)}
 				</li>
 				<li style={nameStyle}>
-					{changedHeader ? <p style={anchorStyle}>{userName}</p> : <p></p>}
+					{changedHeader ? (
+						<p style={anchorStyle}>{userName != null ? userName : 'Admin'}</p>
+					) : (
+						<p></p>
+					)}
 				</li>
 			</ul>
 		</div>

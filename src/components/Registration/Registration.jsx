@@ -38,7 +38,6 @@ const Registration = () => {
 			},
 		});
 		const result = await response.json();
-		console.log(`result`, result);
 		setUser(result);
 		if (result.successful) {
 			navigate('/login');

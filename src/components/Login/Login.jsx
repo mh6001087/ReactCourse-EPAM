@@ -5,6 +5,7 @@ import Input from '../../common/Input/Input';
 import { loginAsync } from '../../store/user/actions';
 import { useDispatch } from 'react-redux';
 import { store } from '../../store/rootReducer';
+import { getUserMe } from '../../store/user/thunk';
 const Login = () => {
 	const dispatch = useDispatch();
 	const [email, setEmail] = useState('');
@@ -25,8 +26,6 @@ const Login = () => {
 
 	const login = async (e) => {
 		e.preventDefault();
-		console.log(`email`, email);
-		console.log(`password`, password);
 		dispatch(loginAsync(email, password));
 		navigate('/courses');
 	};

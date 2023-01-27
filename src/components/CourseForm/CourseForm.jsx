@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import shortid from 'shortid';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
+import { addAuthorAsync } from '../../store/authors/thunk';
 import { ADD_AUTHOR, DELETE_AUTHOR } from '../../store/authors/types';
-import { ADD_COURSE } from '../../store/courses/types';
-import { store } from '../../store/rootReducer';
+import { addCourseAsync, updateCourseAsync } from '../../store/courses/thunk';
 import AuthorItem from './components/AuthorItem/AuthorItem';
 
-const CreateCourse = () => {
-	const { authors } = useSelector((state) => state);
-	const [authorsList, setAuthorList] = useState(authors.authors.result);
+const CourseForm = () => {
+	// const authors = useSelector((state) => state.authors);
+	const authors = useSelector((state) => state.authors.authors.result);
+	const [authorsList, setAuthorList] = useState(authors);
 	const [authorName, setauthorName] = useState('');
 	const dispatch = useDispatch();
 	// course obj
@@ -19,8 +20,11 @@ const CreateCourse = () => {
 	const [description, setDiscription] = useState('');
 	const [duration, setDuration] = useState('');
 	const [courseAuthorList, setcourseAuthorList] = useState([]);
-	const navigate = useNavigate();
 
+	const navigate = useNavigate();
+	const { courseId } = useParams();
+	const isAddMode = !courseId;
+	const location = useLocation();
 	const handleClick = (author) => {
 		setcourseAuthorList((courseAuthorList) => [...courseAuthorList, author]);
 		setAuthorList((prev) => {
@@ -28,7 +32,6 @@ const CreateCourse = () => {
 		});
 	};
 	const handleDelete = (author) => {
-		console.log(`author from delete author`, author);
 		setAuthorList((authorsList) => [...authorsList, author]);
 		setcourseAuthorList((prev) => {
 			return [...prev.filter((item) => item.id !== author.id)];
@@ -39,17 +42,15 @@ const CreateCourse = () => {
 		setauthorName(e.target.value);
 	};
 	const createAuthor = () => {
-		setAuthorList((authorsList) => [
-			...authorsList,
-			{ id: Math.random(), name: authorName },
-		]);
-
-		dispatch({
-			type: ADD_AUTHOR,
-			payload: { id: Math.random(), name: authorName },
-		});
+		// setAuthorList((authorsList) => [
+		// 	...authorsList,
+		// 	{ id: Math.random(), name: authorName },
+		// ]);
+		const author = {
+			name: authorName,
+		};
+		dispatch(addAuthorAsync(author));
 	};
-
 	const toHoursAndMinutes = () => {
 		const minutes = duration % 60;
 		const hours = Math.floor(duration / 60);
@@ -60,14 +61,35 @@ const CreateCourse = () => {
 		return num.toString().padStart(2, '0');
 	};
 	const addCourse = (course) => {
-		dispatch({ type: ADD_COURSE, payload: course });
+		dispatch(addCourseAsync(course));
 		navigate('/courses');
 	};
-
-	// store.subscribe(() => {
-	// 	console.log(`From CreateCourse component`, store.getState().courses);
-	// });
 	const newId = shortid.generate();
+
+	useEffect(() => {
+		if (!isAddMode) {
+			setTitle(location.state.course.title);
+			setDiscription(location.state.course.description);
+			setDuration(location.state.course.duration);
+			setcourseAuthorList([
+				...filterArray(authorsList, location.state.course.authors),
+			]);
+		}
+	}, []);
+	function filterArray(arr1, arr2) {
+		return arr1.filter((item1) => arr2.some((item2) => item1.id === item2));
+	}
+	const updateCourse = () => {
+		const updatedCourse = {
+			title: title,
+			description: description,
+			duration: parseInt(duration),
+			authors: courseAuthorList.map((e) => e.id),
+		};
+		console.log(`updatedCourse`, updatedCourse);
+		dispatch(updateCourseAsync(updatedCourse, location.state.course.id));
+		navigate('/courses');
+	};
 	return (
 		<div
 			style={{
@@ -88,6 +110,7 @@ const CreateCourse = () => {
 					<label>Title</label>
 					<Input
 						placeholder={'Enter title...'}
+						value={title}
 						onChange={(e) => {
 							setTitle(e.target.value);
 						}}
@@ -101,6 +124,7 @@ const CreateCourse = () => {
 						onChange={(e) => {
 							setDiscription(e.target.value);
 						}}
+						value={description}
 					></textarea>
 
 					<h2>Add author</h2>
@@ -123,24 +147,27 @@ const CreateCourse = () => {
 						onChange={(e) => {
 							setDuration(e.target.value);
 						}}
+						value={duration}
 						type='text'
 					/>
 					<h3>Duration: {toHoursAndMinutes()}</h3>
 					<Button
-						buttonText={'Creat course'}
+						buttonText={isAddMode ? 'Add Course' : 'Edit Course'}
 						onClick={() =>
-							addCourse({
-								title: title,
-								description: description,
-								creationDate: new Date().toLocaleDateString('en', {
-									year: 'numeric',
-									day: '2-digit',
-									month: '2-digit',
-								}),
-								duration: parseInt(duration),
-								id: newId,
-								authors: courseAuthorList.map((e) => e.id),
-							})
+							isAddMode
+								? addCourse({
+										title: title,
+										description: description,
+										creationDate: new Date().toLocaleDateString('en', {
+											year: 'numeric',
+											day: '2-digit',
+											month: '2-digit',
+										}),
+										duration: parseInt(duration),
+										id: newId,
+										authors: courseAuthorList.map((e) => e.id),
+								  })
+								: updateCourse()
 						}
 						style={{ padding: '10px 24px', marginLeft: '10px' }}
 					/>
@@ -188,4 +215,4 @@ const CreateCourse = () => {
 	);
 };
 
-export default CreateCourse;
+export default CourseForm;

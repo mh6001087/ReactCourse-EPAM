@@ -1,4 +1,4 @@
-import { LOGIN_ERROR, LOGIN_SUCCESS, LOGOUT } from './types';
+import { LOGIN_ERROR, LOGIN_SUCCESS, LOGOUT, UPDATE_ROLE } from './types';
 
 export const userIntialState = {
 	isAuth: false,
@@ -6,6 +6,7 @@ export const userIntialState = {
 	email: '',
 	error: null,
 	token: '',
+	role: '', // new value
 };
 
 const userReducer = (state = userIntialState, action) => {
@@ -18,6 +19,7 @@ const userReducer = (state = userIntialState, action) => {
 				name: action.payload.name,
 				email: action.payload.email,
 				token: action.payload.token,
+				role: action.payload.role,
 			};
 
 		case LOGOUT:
@@ -33,6 +35,12 @@ const userReducer = (state = userIntialState, action) => {
 			return {
 				...state,
 				error: action.payload,
+			};
+
+		case UPDATE_ROLE:
+			return {
+				...state,
+				role: action.payload,
 			};
 		default:
 			return state;

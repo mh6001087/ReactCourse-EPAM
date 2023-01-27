@@ -12,14 +12,15 @@ const authorsReducer = (state = defaultState, action) => {
 		case ADD_AUTHOR: {
 			return {
 				...state,
-				authors: [...state.authors, action.payload],
+				authors: [...state.authors.result, action.payload],
 			};
 		}
 		case DELETE_AUTHOR: {
-			console.log(`state.authors`, state);
 			return {
 				...state,
-				authors: state.authors.filter((author) => author.id !== action.payload),
+				authors: state.authors.result.filter(
+					(author) => author.id !== action.payload
+				),
 			};
 		}
 		default:

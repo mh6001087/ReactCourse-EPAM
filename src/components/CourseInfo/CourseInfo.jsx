@@ -19,7 +19,6 @@ const CourseInfo = () => {
 	const courses = useSelector((state) => state.courses.courses);
 	const course = courses.find((e) => e.id === courseId);
 	const authorsList = useSelector((state) => state);
-	console.log(`authorsList from info`, authorsList);
 	const {
 		id,
 		title,

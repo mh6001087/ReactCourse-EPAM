@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getUserMe } from './thunk';
 import { LOGIN_ERROR, LOGIN_SUCCESS } from './types';
 
 export const loginAsync = (_email, password) => async (dispatch) => {
@@ -12,6 +13,7 @@ export const loginAsync = (_email, password) => async (dispatch) => {
 		const name = res.data.user.name;
 		const email = res.data.user.email;
 		dispatch({ type: LOGIN_SUCCESS, payload: { token, name, email } });
+		dispatch(getUserMe(token));
 	} catch (err) {
 		// Handle the error
 		dispatch({ type: LOGIN_ERROR, payload: err });
