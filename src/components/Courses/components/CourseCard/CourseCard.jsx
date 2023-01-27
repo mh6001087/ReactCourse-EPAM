@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../../../common/Button/Button';
 import ProtoTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { DELETE_COURSE } from '../../../../store/courses/types';
+import { deleteCourseAsync } from '../../../../store/courses/thunk';
 const CourseCard = ({ course, authorList }) => {
 	const dispatch = useDispatch();
 
@@ -21,6 +21,7 @@ const CourseCard = ({ course, authorList }) => {
 	const divCard = { float: 'left', width: '50%', marginRight: '80px' };
 
 	const navigate = useNavigate();
+	const user = useSelector((state) => state.user);
 
 	const {
 		id,
@@ -39,7 +40,6 @@ const CourseCard = ({ course, authorList }) => {
 					?.map((author) => author.name)
 			)
 			.join(', ');
-		console.log(`result from get authors`, result);
 		return result;
 	};
 
@@ -54,7 +54,7 @@ const CourseCard = ({ course, authorList }) => {
 		return num.toString().padStart(2, '0');
 	};
 	const handleDelete = () => {
-		dispatch({ type: DELETE_COURSE, payload: course.id });
+		dispatch(deleteCourseAsync(course.id));
 	};
 	return (
 		<div style={courseCardStyle}>
@@ -79,17 +79,24 @@ const CourseCard = ({ course, authorList }) => {
 					onClick={() => navigate(`/courses/${id}`)}
 					style={{ padding: '10px 24px', marginLeft: '10px' }}
 				/>
-				<Button
-					type='button'
-					buttonText='Delete'
-					onClick={handleDelete}
-					style={{ padding: '10px 24px', marginLeft: '10px' }}
-				/>
-				<Button
-					type='button'
-					buttonText='Update'
-					style={{ padding: '10px 24px', marginLeft: '10px' }}
-				/>
+				{user.role === 'admin' && (
+					<Button
+						type='button'
+						buttonText='Delete'
+						onClick={handleDelete}
+						style={{ padding: '10px 24px', marginLeft: '10px' }}
+					/>
+				)}
+				{user.role === 'admin' && (
+					<Button
+						type='button'
+						buttonText='Update'
+						onClick={() =>
+							navigate(`/courses/update/${id}`, { state: { course: course } })
+						}
+						style={{ padding: '10px 24px', marginLeft: '10px' }}
+					/>
+				)}
 			</div>
 		</div>
 	);

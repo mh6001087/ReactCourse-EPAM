@@ -18,9 +18,6 @@ const coursesReducer = (state = defaultState, action) => {
 			};
 		}
 		case ADD_COURSE: {
-			console.log(` action.payload`, action.payload);
-			console.log(` action`, action);
-			console.log(` state`, state);
 			return {
 				...state,
 				courses: [...state.courses, action.payload],
@@ -33,7 +30,7 @@ const coursesReducer = (state = defaultState, action) => {
 			};
 		}
 		case UPDATE_COURSE:
-			let updatedCourse = state.courses.map((course) => {
+			let updatedCourses = state.courses.map((course) => {
 				if (course.id === action.payload.id) {
 					return action.payload;
 				}
@@ -41,7 +38,7 @@ const coursesReducer = (state = defaultState, action) => {
 			});
 			return {
 				...state,
-				course: updatedCourse,
+				courses: updatedCourses,
 			};
 		default:
 			return state;

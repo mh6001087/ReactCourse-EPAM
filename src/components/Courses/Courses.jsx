@@ -20,11 +20,10 @@ const Courses = () => {
 	}, [dispatch]);
 
 	useEffect(() => {
-		if (!courses) {
+		if (courses.courses.length === 0) {
 			dispatch(fetchCoursesData());
 		}
 	}, [dispatch, courses]);
-	console.log(`courses`, courses);
 	// useEffect(() => {
 	// 	if (courses.length > 0) {
 	// 		const filteredData = courses?.filter((course) =>
@@ -47,10 +46,6 @@ const Courses = () => {
 		//here we set the filtered list to result
 		//setCourses(searchResult);
 	};
-
-	// store.subscribe(() => {
-	// 	console.log(`From courses component`, store.getState().courses);
-	// });
 	return (
 		<>
 			<SearchBar onChange={searchChange} />
@@ -64,7 +59,7 @@ const Courses = () => {
 					<CourseCard
 						key={course.id}
 						course={course}
-						authorList={authors.result}
+						authorList={authors.authors.result}
 					/>
 				))}
 		</>
