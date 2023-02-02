@@ -51,7 +51,6 @@ export const deleteCourseAsync = (courseId) => {
 };
 
 export const updateCourseAsync = (course, courseId) => {
-	console.log(`course`, course);
 	return async (dispatch) => {
 		const tokenValue = localStorage.token;
 		await axios
