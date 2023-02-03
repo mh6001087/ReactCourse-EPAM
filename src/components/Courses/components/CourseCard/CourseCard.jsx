@@ -57,7 +57,7 @@ const CourseCard = ({ course, authorList }) => {
 		dispatch(deleteCourseAsync(course.id));
 	};
 	return (
-		<div style={courseCardStyle}>
+		<div style={courseCardStyle} data-testid='course-card'>
 			<div style={divCard}>
 				<h2>{title}</h2>
 				<p>{description}</p>
