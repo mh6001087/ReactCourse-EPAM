@@ -86,7 +86,6 @@ const CourseForm = () => {
 			duration: parseInt(duration),
 			authors: courseAuthorList.map((e) => e.id),
 		};
-		console.log(`updatedCourse`, updatedCourse);
 		dispatch(updateCourseAsync(updatedCourse, location.state.course.id));
 		navigate('/courses');
 	};
@@ -99,6 +98,7 @@ const CourseForm = () => {
 				gap: '1rem',
 				border: 3,
 			}}
+			data-testid='course-create-card'
 		>
 			<section
 				style={{

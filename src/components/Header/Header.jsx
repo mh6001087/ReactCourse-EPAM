@@ -76,7 +76,7 @@ const Header = () => {
 		<div style={{ border: 3, margin: '9px' }}>
 			<ul style={uIStyle}>
 				<li style={lILeftStyle}>
-					<Logo />
+					<Logo data-testid='logo' />
 				</li>
 				<li style={lIRightStyle}>
 					{changedHeader ? (
